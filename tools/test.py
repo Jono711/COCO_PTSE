@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader
 import datasets.samplers as samplers
 # from datasets import build_dataset, get_coco_api_from_dataset
 from datasets import ConcatDataset
-from datasets.vid_multi import build_vidmulti
+from datasets.vid_multi_coco import build_vidmulti
 from src.models.model_builder import build_model
 from src.configs.default import _C as cfg
 from src.engine.engine import evaluate, train_one_epoch
