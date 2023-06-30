@@ -147,8 +147,8 @@ def build_vidmulti(image_set, cfg, transforms=build_vitmulti_transforms(True)):
     if is_train:
         dataset = VIDMULTIDataset(
         image_set = image_set,
-        img_dir = ,
-        anno_path = "train.json",
+        img_dir = cfg.DATASET.train_dir,
+        json_file = "train.json",
         transforms = transforms, # make_vid_transforms('train'),
         is_train = is_train,
         cfg=cfg
@@ -156,8 +156,8 @@ def build_vidmulti(image_set, cfg, transforms=build_vitmulti_transforms(True)):
     else:
         dataset = VIDMULTIDataset(
         image_set = image_set,
-        img_dir = "/content/drive/MyDrive/YOLOv5 (1)/datasets/Worms_NewAlignment_Parafilm/validation/images/",
-        anno_path = "val.json",
+        img_dir = cfg.DATASET.val_dir,
+        json_file = "val.json",
         transforms = transforms, # make_vid_transforms('val'),
         is_train = is_train,
         cfg=cfg

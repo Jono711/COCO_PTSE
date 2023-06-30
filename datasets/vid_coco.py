@@ -87,9 +87,9 @@ class VIDDataset(torch.utils.data.Dataset):
         # pattern[video_id][frame_id][name] = "file_name"
         self.pattern = {}
         for image in self.coco_data["images"]:
-            if not isinstance(self.pattern[image["video_id"]], dict):
+            if image["video_id"] in self.pattern:
                 self.pattern[image["video_id"]] = {}
-            self.pattern[image["video_id"]][image["frame_id"]] = image["file_name"]
+            self.pattern[image["video_id"]][image["frame_id"]] = image["file_name"].replace(".jpg", "")
 
 
         #self.classes_to_ind = dict(zip(self.classes_map, range(len(self.classes_map))))
@@ -270,7 +270,9 @@ class VIDDataset(torch.utils.data.Dataset):
 
             for annotation in annotations:
                 if annotation["image_id"] == idx:
-                    piannotation["boxes"].append(annotation["bbox"])
+                    [Xmid, Ymid, Width, Height] = annotation["bbox"]
+                    bbox = [Xmid - 1/2 * Width, Ymid - 1/2 * Height, Xmid + 1/2 * Width, Ymid + 1/2 * Height]
+                    piannotation["boxes"].append(bbox)
                     piannotation["labels"].append(annotation["category_id"])
                     piannotation["areas"].append(annotation["area"])
             piannotations.append(piannotation)
@@ -314,8 +316,8 @@ class VIDDataset(torch.utils.data.Dataset):
         boxes[:, 1::2].clamp_(min=0, max=height)
         keep = (boxes[:, 3] > boxes[:, 1]) & (boxes[:, 2] > boxes[:, 0])
         boxes = boxes[keep]
-
-        labels = torch.tensor(labels[keep], dtype=torch.int64)
+        labels = torch.tensor(labels, dtype=torch.int64)
+        labels = labels[keep]
         areas = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
 
         size = torch.tensor([height, width])  #  rechecked, is h w

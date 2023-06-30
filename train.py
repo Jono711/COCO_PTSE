@@ -1,7 +1,6 @@
 import sys
 import os
 import os.path as osp
-
 import torch
 import util.misc as utils
 import argparse
@@ -74,14 +73,14 @@ def main(cfg=cfg):
 
     dataset_train_list = []
     for split_name in cfg.DATASET.dataset_file:
-        dataset_train_list.append(build_vidmulti(image_set='train', cfg=cfg, split_name=split_name))
+        dataset_train_list.append(build_vidmulti(image_set='train', cfg=cfg))
     # vidmulti_train = build_vidmulti(image_set='train', cfg=cfg, split_name='VID_train_15frames')
     # detmulti_train = build_vidmulti(image_set='train', cfg=cfg, split_name='DET_train_30classes')
     dataset_train = ConcatDataset(dataset_train_list)
 
     # dataset_train =build_vidmulti(image_set='train', cfg=cfg, split_name='VID_train_3frames')
 
-    dataset_val = build_vidmulti(image_set='val', cfg=cfg, split_name=cfg.DATASET.val_dataset)
+    dataset_val = build_vidmulti(image_set='val', cfg=cfg)
 
     if cfg.TRAIN.distributed:
         sampler_train = samplers.DistributedSampler(dataset_train)
