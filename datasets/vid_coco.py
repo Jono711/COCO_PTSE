@@ -87,7 +87,7 @@ class VIDDataset(torch.utils.data.Dataset):
         # pattern[video_id][frame_id][name] = "file_name"
         self.pattern = {}
         for image in self.coco_data["images"]:
-            if image["video_id"] in self.pattern:
+            if image["video_id"] not in self.pattern:
                 self.pattern[image["video_id"]] = {}
             self.pattern[image["video_id"]][image["frame_id"]] = image["file_name"].replace(".jpg", "")
 
